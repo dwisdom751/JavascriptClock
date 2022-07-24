@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+
+<center><canvas id = "myCan" Height = "600" Width = "600"></canvas></center>
+
+<script>
+
+can = document.getElementById("myCan");
+canTX = can.getContext("2d");
+
+function drawFace(drawOn)
+{
+	drawOn.font = "30px Times New Roman"
+	
+	for (let count = 1; count <= 12; count++)
+	{
+		angle = (((2*Math.PI)/12)*count)-((2*Math.PI)/4);
+		yDiff = Math.sin(angle)*185;
+		xDiff = Math.cos(angle)*185;
+		
+		drawOn.fillText(count,300+xDiff,300+yDiff)
+	}
+	
+}
+
+function drawHands(drawOn)
+{
+	curTime = new Date
+	
+	//do second hand
+	drawOn.beginPath()
+	drawOn.moveTo(300,300);
+	angle = (((2*Math.PI)/60)*curTime.getSeconds())-((2*Math.PI)/4);
+	yDiff = Math.sin(angle)*195;
+	xDiff = Math.cos(angle)*195;
+	drawOn.lineTo(300+xDiff,300+yDiff);
+	canTX.strokeStyle = "#FF0000"
+	drawOn.stroke();
+	canTX.strokeStyle = "#000000"
+	
+	//do minute hand
+	drawOn.beginPath()
+	drawOn.moveTo(300,300);
+	angle = (((2*Math.PI)/60)*(curTime.getMinutes()+(curTime.getSeconds()/60)))-((2*Math.PI)/4);
+	yDiff = Math.sin(angle)*185;
+	xDiff = Math.cos(angle)*185;
+	drawOn.lineTo(300+xDiff,300+yDiff);
+	drawOn.lineWidth = 5
+	drawOn.stroke();
+	drawOn.lineWidth = 1
+
+
+	//do hour hand
+	drawOn.beginPath()
+	drawOn.moveTo(300,300);
+	angle = (((2*Math.PI)/12)*(curTime.getHours()%12+(curTime.getMinutes()/60)))-((2*Math.PI)/4);
+	yDiff = Math.sin(angle)*155;
+	xDiff = Math.cos(angle)*155;
+	drawOn.lineTo(300+xDiff,300+yDiff);
+	drawOn.lineWidth = 10
+	drawOn.stroke();
+	drawOn.lineWidth = 1
+
+
+
+}
+
+
+
+function mainLoop()
+{
+	canTX.clearRect(0, 0, can.width, can.height);
+	canTX.beginPath()
+	canTX.arc(300,300,220,0,2*Math.PI);
+	canTX.stroke();
+	drawFace(canTX);
+	drawHands(canTX);
+}
+
+setInterval(mainLoop,15)
+
+</script>
+
+</html>
